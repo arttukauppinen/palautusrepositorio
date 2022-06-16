@@ -1,0 +1,4 @@
+selain->palvelin: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+palvelin-->selain: 302
+  
+selain käsittelee uuden muistiinpanon ja lisää sen listaan
