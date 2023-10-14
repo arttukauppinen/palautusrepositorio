@@ -5,7 +5,6 @@ import persons from './services/persons'
 import './index.css'
 
 const Person = ({ person, filter, deletePerson }) => {
-  console.log(person.id + "eyes")
   return(
     person.name.toLowerCase().includes(filter.toLowerCase())
       ?(<p>
