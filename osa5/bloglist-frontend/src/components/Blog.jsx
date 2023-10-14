@@ -1,8 +1,10 @@
 import { useState, useImperativeHandle, forwardRef } from "react";
+import blogService from "../services/blogs";
 
 const Blog = ({ blog }) => {
   const [visible, setVisible] = useState(false);
   const [buttonName, setButtonName] = useState("view");
+  const [likes, setLikes] = useState(blog.likes);
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -18,6 +20,12 @@ const Blog = ({ blog }) => {
     setButtonName(buttonName === "view" ? "hide" : "view");
   };
 
+  const handleLikeAddition = () => {
+    const updatedBlog = { ...blog, likes: likes + 1 };
+    blogService.update(blog.id, updatedBlog);
+    setLikes(likes + 1);
+  };
+
   return (
     <div style={blogStyle}>
       {blog.title}
@@ -27,7 +35,7 @@ const Blog = ({ blog }) => {
         <br />
         {blog.url}
         <br />
-        likes: {blog.likes} <button>like</button>
+        likes: {likes} <button onClick={handleLikeAddition}>like</button>
         <br />
         {blog.user.name}
       </div>
