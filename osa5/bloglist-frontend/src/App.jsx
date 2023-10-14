@@ -31,7 +31,7 @@ const App = () => {
 
   const addBlog = (blogObject) => {
     blogService.create(blogObject).then((returnedBlog) => {
-      setBlogs(blogs.concat(returnedBlog));
+      blogService.getAll().then((blogs) => setBlogs(blogs));
       setNotification(
         `A new blog ${returnedBlog.title} by ${returnedBlog.author} added`
       );
