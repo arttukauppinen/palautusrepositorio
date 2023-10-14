@@ -111,14 +111,9 @@ const App = () => {
     <div>
       <Notification message={notification} type={notificationType} />
       <h2>blogs</h2>
-      <p>{user.name} logged in</p> <h2>create new</h2>
+      {user.name} logged in
       <button onClick={handleLogout}>Logout</button>
-      {user && (
-        <div>
-          <p>{user.name} logged in</p>
-          {blogForm()}
-        </div>
-      )}
+      {user && <div>{blogForm()}</div>}
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}
