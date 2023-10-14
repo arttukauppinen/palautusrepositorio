@@ -8,6 +8,7 @@ import Togglable from "./components/Togglable";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
+  const [refresh, setRefresh] = useState([false]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
@@ -18,7 +19,7 @@ const App = () => {
     blogService
       .getAll()
       .then((blogs) => setBlogs(blogs.sort((a, b) => b.likes - a.likes)));
-  }, []);
+  }, [refresh]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
@@ -30,6 +31,12 @@ const App = () => {
   }, []);
 
   const blogFormRef = useRef();
+
+  const refreshBlogs = () => {
+    setRefresh((prev) => !prev);
+  };
+
+  const blogMadeByLoggedUser = (blog) => blog.user.name === user.name;
 
   const addBlog = (blogObject) => {
     blogService.create(blogObject).then((returnedBlog) => {
@@ -119,7 +126,12 @@ const App = () => {
       <button onClick={handleLogout}>Logout</button>
       {user && <div>{blogForm()}</div>}
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          refreshBlogs={refreshBlogs}
+          canRemove={blogMadeByLoggedUser(blog)}
+        />
       ))}
     </div>
   );

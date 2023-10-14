@@ -1,10 +1,9 @@
 import { useState, useImperativeHandle, forwardRef } from "react";
 import blogService from "../services/blogs";
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, refreshBlogs, canRemove }) => {
   const [visible, setVisible] = useState(false);
   const [buttonName, setButtonName] = useState("view");
-  const [likes, setLikes] = useState(blog.likes);
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -12,18 +11,44 @@ const Blog = ({ blog }) => {
     borderWidth: 1,
     marginBottom: 5,
   };
+  const removeButtonStyle = {
+    backgroundColor: "#007BFF",
+    border: "none",
+    borderRadius: "4px",
+    cursor: "pointer",
+  };
 
   const showWhenVisible = { display: visible ? "" : "none" };
 
   const handleButtonClick = () => {
+    console.log(blog);
     setVisible(!visible);
     setButtonName(buttonName === "view" ? "hide" : "view");
   };
 
   const handleLikeAddition = () => {
-    const updatedBlog = { ...blog, likes: likes + 1 };
-    blogService.update(blog.id, updatedBlog);
-    setLikes(likes + 1);
+    const updatedBlog = { ...blog, likes: blog.likes + 1 };
+    blogService
+      .update(blog.id, updatedBlog)
+      .then(() => {
+        refreshBlogs();
+      })
+      .catch((error) => {
+        console.error("Error updating the blog:", error);
+      });
+  };
+
+  const handleDelete = () => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      blogService
+        .deleteBlog(blog.id)
+        .then(() => {
+          refreshBlogs();
+        })
+        .catch((error) => {
+          console.error("Error deleting the blog:", error);
+        });
+    }
   };
 
   return (
@@ -35,9 +60,15 @@ const Blog = ({ blog }) => {
         <br />
         {blog.url}
         <br />
-        likes: {likes} <button onClick={handleLikeAddition}>like</button>
+        likes: {blog.likes} <button onClick={handleLikeAddition}>like</button>
         <br />
         {blog.user.name}
+        <br />
+        {canRemove && (
+          <button onClick={handleDelete} style={removeButtonStyle}>
+            remove
+          </button>
+        )}
       </div>
     </div>
   );
