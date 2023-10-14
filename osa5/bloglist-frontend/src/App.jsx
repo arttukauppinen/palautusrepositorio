@@ -15,7 +15,9 @@ const App = () => {
   const [notificationType, setNotificationType] = useState(null);
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    blogService
+      .getAll()
+      .then((blogs) => setBlogs(blogs.sort((a, b) => b.likes - a.likes)));
   }, []);
 
   useEffect(() => {
@@ -31,7 +33,9 @@ const App = () => {
 
   const addBlog = (blogObject) => {
     blogService.create(blogObject).then((returnedBlog) => {
-      blogService.getAll().then((blogs) => setBlogs(blogs));
+      blogService
+        .getAll()
+        .then((blogs) => setBlogs(blogs.sort((a, b) => b.likes - a.likes)));
       setNotification(
         `A new blog ${returnedBlog.title} by ${returnedBlog.author} added`
       );
