@@ -21,7 +21,6 @@ const Blog = ({ blog, refreshBlogs, canRemove }) => {
   const showWhenVisible = { display: visible ? '' : 'none' }
 
   const handleButtonClick = () => {
-    console.log(blog)
     setVisible(!visible)
     setButtonName(buttonName === 'view' ? 'hide' : 'view')
   }
