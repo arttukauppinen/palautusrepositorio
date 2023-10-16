@@ -51,20 +51,20 @@ const Blog = ({ blog, refreshBlogs, canRemove }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div className="blog" style={blogStyle}>
       {blog.title}
-      <button onClick={handleButtonClick}>{buttonName}</button>
+      <button id='view' onClick={handleButtonClick}>{buttonName}</button>
       <div style={showWhenVisible}>
         {blog.author}
         <br />
         {blog.url}
         <br />
-        likes: {blog.likes} <button onClick={handleLikeAddition}>like</button>
+        likes: {blog.likes} <button id='like' onClick={handleLikeAddition}>like</button>
         <br />
         {blog.user.name}
         <br />
         {canRemove && (
-          <button onClick={handleDelete} style={removeButtonStyle}>
+          <button id='remove' onClick={handleDelete} style={removeButtonStyle}>
             remove
           </button>
         )}

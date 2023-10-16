@@ -44,7 +44,7 @@ const App = () => {
         .getAll()
         .then((blogs) => setBlogs(blogs.sort((a, b) => b.likes - a.likes)))
       setNotification(
-        `A new blog ${returnedBlog.title} by ${returnedBlog.author} added`
+        `blog ${returnedBlog.title} by ${returnedBlog.author} added`
       )
       setNotificationType('success')
       setTimeout(() => {
@@ -97,6 +97,7 @@ const App = () => {
           <div>
             username
             <input
+              id='username'
               type="text"
               value={username}
               name="Username"
@@ -106,13 +107,14 @@ const App = () => {
           <div>
             password
             <input
+              id='password'
               type="password"
               value={password}
               name="Password"
               onChange={({ target }) => setPassword(target.value)}
             />
           </div>
-          <button type="submit">login</button>
+          <button id="login-button" type="submit">login</button>
         </form>
       </div>
     )
@@ -123,7 +125,7 @@ const App = () => {
       <Notification message={notification} type={notificationType} />
       <h2>blogs</h2>
       {user.name} logged in
-      <button onClick={handleLogout}>Logout</button>
+      <button id='logout' onClick={handleLogout}>Logout</button>
       {user && <div>{blogForm()}</div>}
       {blogs.map((blog) => (
         <Blog
