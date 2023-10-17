@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useSelector, useDispatch } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
+import { notificationChange, resetNotification } from '../reducers/notificationReducer'
 
 const Anecdote = ({ anecdote, handleClick }) => {
   return(
@@ -18,7 +19,6 @@ const Anecdote = ({ anecdote, handleClick }) => {
 
 const AnecdoteList = () => {
   const dispatch = useDispatch()
-  // useSelector(state => console.log(state))
   const anecdotes = useSelector(state => [...state.anecdotes].filter(a => a.content.includes(state.filter)).sort((a, b) => b.votes - a.votes))
   return(
     <ul>
@@ -26,9 +26,13 @@ const AnecdoteList = () => {
         <Anecdote
           key={anecdote.id}
           anecdote={anecdote}
-          handleClick={() => 
-            dispatch(voteAnecdote(anecdote.id))
-          }
+          handleClick={() => {
+            dispatch(voteAnecdote(anecdote.id));
+            dispatch(notificationChange(`you voted '${anecdote.content}'`));
+            setTimeout(() => {
+              dispatch(resetNotification());
+            }, 5000);
+          }}
         />
       )}
     </ul>
