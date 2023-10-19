@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useSelector, useDispatch } from 'react-redux'
 import { addVote } from '../reducers/anecdoteReducer'
-import { notificationChange, resetNotification } from '../reducers/notificationReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 const Anecdote = ({ anecdote, handleClick }) => {
   return(
@@ -28,10 +28,7 @@ const AnecdoteList = () => {
           anecdote={anecdote}
           handleClick={() => {
             dispatch(addVote(anecdote.id));
-            dispatch(notificationChange(`you voted '${anecdote.content}'`));
-            setTimeout(() => {
-              dispatch(resetNotification());
-            }, 5000);
+            dispatch(setNotification(`you voted '${anecdote.content}'`, 5));
           }}
         />
       )}
